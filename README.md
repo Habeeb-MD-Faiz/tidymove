@@ -1,15 +1,15 @@
 <div align="center">
 
-<img src="site/wordmark.svg" alt="tidymove" width="320">
+<img src="assets/wordmark.svg" alt="tidymove" width="320">
 
 ### Move your computer life over. Tidy, checked, nothing lost.
 
 An AI-guided kit for sorting out old drives, new laptops, and years of digital clutter.<br>
 **You make the decisions. Your agent makes the plan. Your originals stay put.**
 
-[![License: MIT](site/badge-license.svg)](LICENSE)
-[![Stage: early release](site/badge-stage.svg)](#what-to-expect)
-[![Windows PowerShell 5.1](site/badge-windows.svg)](docs/USAGE.md#check-the-scripts)
+[![License: MIT](assets/badge-license.svg)](LICENSE)
+[![Stage: early release](assets/badge-stage.svg)](#what-to-expect)
+[![Windows PowerShell 5.1](assets/badge-windows.svg)](docs/USAGE.md#check-the-scripts)
 
 [Get started](#quick-start) · [See a run](#what-a-run-looks-like) · [Safety](#the-safety-rules) · [FAQ](#faq) · [Contribute](CONTRIBUTING.md)
 

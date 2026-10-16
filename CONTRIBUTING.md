@@ -10,8 +10,6 @@ Clearer wording, safer scripts, and reproducible bug reports are welcome. Small 
 
 The [practical guide](docs/USAGE.md) explains script requirements and how to choose a separate test folder. Keep PowerShell scripts ASCII or UTF-8 with a BOM so PowerShell 5.1 reads them correctly. Keep shell scripts with LF line endings.
 
-For `site/index.html`, keep CSS and JavaScript inline. Do not add tracking, remote fonts, dependencies, or a build step. Test keyboard navigation and widths of 390, 768, and 1440 pixels. Make sure text remains readable and nothing causes sideways scrolling. The small SVGs in `site/` support the README; the page must work without them.
-
 Report vulnerabilities through [SECURITY.md](SECURITY.md). Please follow the [code of conduct](CODE_OF_CONDUCT.md).
 
 Contributions are offered under the project's [MIT license](LICENSE). Copyright remains **the tidymove authors**.
