@@ -1,0 +1,6 @@
+# Remove comments before CSV import. Columns are item,src,decision,dst,notes.
+# item=stable ID plus recognizable item; src=one bounded source path, never a root used as blanket coverage.
+# decision=unresolved/copy-approved/retain-original/owner-handled/deferred; dst=chosen destination or none.
+# notes=question ID, raw-answer reference, reason, evidence class, approval scope, owner and next review.
+item,src,decision,dst,notes
+T-01 <PROJECT>,<SOURCE-1>/<PROJECT>,unresolved,,Q-01; ask owner before selecting a destination; no copy or upload approved

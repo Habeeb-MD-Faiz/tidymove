@@ -1,0 +1,6 @@
+# Remove comments before CSV import. Columns are app,decision,how,notes.
+# app=product plus exact package ID; decision=keep/reinstall/drop-from-new-setup/defer.
+# how=approved manager/location/install scope; notes=current version/path/evidence, alias conflicts and approval.
+# Drop does not authorize uninstalling software or deleting old installation data.
+app,decision,how,notes
+<TOOL> (<PACKAGE-ID>),reinstall,<MANAGER> in <TARGET>/tools,Owner approval pending; verify fresh-shell path; retain original config

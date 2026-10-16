@@ -1,0 +1,29 @@
+runs/
+*.log
+.env*
+*.pem
+*.key
+*.pfx
+*.p12
+*credential*
+*secret*
+*token*
+*recovery-code*
+*private-key*
+*vault*
+auth.json
+hosts.yml
+rclone.conf
+.DS_Store
+Thumbs.db
+.npmrc
+.pypirc
+.gitcookies
+.kube/
+.docker/
+*.kdbx
+*.keychain
+*.keychain-db
+Cookies
+Login Data
+Web Data

@@ -1,0 +1,8 @@
+# Remove these documentation comments before importing with ordinary CSV tools.
+# kind=folder/file/secret-name/cloud-placeholder/link-or-cloud/error; path=absolute observed path.
+# bytes,file_count=direct children only for folder rows; sum folder rows without double counting.
+# oldest_utc,newest_utc=file modification timestamps; type_mix=extension:count pairs.
+# repo=repository/worktree/linked or blank; scanner dirty=needs-checking or blank; no Git process is invoked.
+# detail=scope, exclusion or error evidence; a secret-name row never includes contents.
+kind,path,bytes,file_count,oldest_utc,newest_utc,type_mix,repo,dirty,detail
+folder,<SOURCE-1>/<PROJECT>,1024,1,<UTC-TIMESTAMP>,<UTC-TIMESTAMP>,.md:1,repository,needs-checking,Direct children only; repository contents not read

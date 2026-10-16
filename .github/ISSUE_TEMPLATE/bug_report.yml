@@ -1,0 +1,33 @@
+name: Bug report
+description: Report a reproducible problem using made-up data.
+title: "Bug: "
+body:
+  - type: markdown
+    attributes:
+      value: "If this could expose information or damage files, use the private reporting route in SECURITY.md. Do not paste real paths, logs, credentials, or migration records."
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps with made-up files
+      description: Include the command and a small synthetic example, with no personal paths.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Kit revision, operating system, and shell version
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: I removed personal details and used only synthetic data.
+          required: true

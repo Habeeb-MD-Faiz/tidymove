@@ -1,0 +1,8 @@
+{
+  "name": "tidymove",
+  "description": "A guided fresh start for your files, folders, and tools.",
+  "owner": { "name": "the tidymove authors" },
+  "plugins": [
+    { "name": "tidymove", "source": "./", "description": "Plan a new home for your files, copy them with checks, and keep the originals." }
+  ]
+}
