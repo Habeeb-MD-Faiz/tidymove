@@ -1,8 +1,8 @@
 {
   "name": "tidymove",
-  "description": "A guided fresh start for your files, folders, and tools.",
+  "description": "Move your files from old computers and drives to one tidy new home without losing any. Every copy is checked and the originals stay as they were.",
   "owner": { "name": "the tidymove authors" },
   "plugins": [
-    { "name": "tidymove", "source": "./", "description": "Plan a new home for your files, copy them with checks, and keep the originals." }
+    { "name": "tidymove", "source": "./", "description": "Move your files from old computers and drives to one tidy new home without losing any. Every copy is checked and the originals stay as they were." }
   ]
 }

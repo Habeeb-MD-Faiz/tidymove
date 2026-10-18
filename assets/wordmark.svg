@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="380" height="104" viewBox="0 0 380 104" role="img" aria-labelledby="title">
-  <title id="title">tidymove</title>
-  <rect width="380" height="104" rx="16" fill="#f6f5ef"/>
-  <path d="m24 48 28-24 28 24v36H24Z" fill="#d8f486" stroke="#344b29" stroke-width="3" stroke-linejoin="round"/>
-  <path d="M42 84V60h20v24M34 46h36" fill="none" stroke="#344b29" stroke-width="3"/>
-  <text x="101" y="72" font-family="Arial,Helvetica,sans-serif" font-size="55" font-weight="700" letter-spacing="-3" fill="#22271f">tidymove</text>
-</svg>

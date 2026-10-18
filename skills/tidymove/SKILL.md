@@ -1,6 +1,6 @@
 ---
 name: tidymove
-description: Guide owner-led data inventory, migration to a new drive or laptop, workspace reorganization, system reconciliation, and safe agent setup. Use for planning or carrying out a copy-only machine migration with inventories, short questionnaires, independent audits, verification and closeout.
+description: Guide owner-led data inventory, migration to a new drive or laptop, workspace reorganization, system reconciliation, and safe agent setup. Use for planning or carrying out a move that checks every copy and keeps the originals, with inventories, short questionnaires, independent audits, verification and closeout.
 ---
 
 # tidymove

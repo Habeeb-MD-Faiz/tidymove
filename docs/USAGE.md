@@ -2,6 +2,81 @@
 
 Start with the [README](../README.md). This guide is for the person or agent preparing the actual commands. You can begin planning without running any of them.
 
+## Install
+
+Works with the agent you already use. You need it installed with local file access. Installing tidymove does not start copying files.
+
+### Claude Code
+
+Paste each line into the Claude Code conversation:
+
+```text
+/plugin marketplace add Habeeb-MD-Faiz/tidymove
+/plugin install tidymove@tidymove
+```
+
+Review the installation prompt, then restart Claude Code or reload its plugins. Ask it to help you plan a move with tidymove.
+
+### Codex
+
+Paste this into the Codex conversation, not a terminal, then restart Codex:
+
+```text
+$skill-installer install https://github.com/Habeeb-MD-Faiz/tidymove/tree/main/skills/tidymove
+```
+
+### Cursor
+
+Clone the repo in a terminal, then open the cloned folder in Cursor:
+
+```shell
+git clone https://github.com/Habeeb-MD-Faiz/tidymove
+```
+
+Ask in the Cursor conversation:
+
+```text
+Read AGENTS.md and help me plan a move.
+```
+
+### Gemini CLI
+
+Install the skill from your terminal and review the confirmation prompt:
+
+```shell
+gemini skills install https://github.com/Habeeb-MD-Faiz/tidymove.git --path skills/tidymove
+```
+
+### Any other agent
+
+Clone the repo in a terminal, then open your agent in the cloned folder:
+
+```shell
+git clone https://github.com/Habeeb-MD-Faiz/tidymove
+```
+
+Ask in the agent conversation:
+
+```text
+Read AGENTS.md and help me plan a move.
+```
+
+The agent must be able to read local files and follow the linked skill. Automatic discovery and permissions vary by tool.
+
+### Install sources
+
+Documentation checked on 2026-10-18. These routes match the README. The local manifests confirm the plugin and marketplace names; the complete skill lives in `skills/tidymove/`.
+
+| Agent | Source and scope |
+|---|---|
+| Claude Code | [Install and manage plugins](https://code.claude.com/docs/en/discover-plugins#add-a-marketplace) documents GitHub `owner/repo` marketplaces and `plugin@marketplace` installation. |
+| Codex | [Install skills for local use](https://learn.chatgpt.com/docs/build-skills#install-curated-skills-for-local-use) documents asking `$skill-installer` to download skills from other repositories. This is a conversation prompt, not a shell command. The bundled installer also supports GitHub tree URLs. |
+| Cursor | [Rules and AGENTS.md](https://cursor.com/docs/rules#agentsmd) documents instructions in the project root. The clone-and-read route uses this repository’s `AGENTS.md`, which directs the agent to the skill. |
+| Gemini CLI | [Agent Skills](https://geminicli.com/docs/cli/skills/#managing-skills) documents Git repository installation and `--path` for a skill subdirectory. |
+| Any other agent | [AGENTS.md](../AGENTS.md) links to [the skill](../skills/tidymove/SKILL.md). This is an explicit read request, not a claim of native installation or automatic discovery. |
+
+No live agent installation was performed for this documentation update. When using the plain skill, keep the entire `skills/tidymove/` folder together, including `references/`, `templates/` and `scripts/`.
+
 ## Before you start
 
 You need an AI tool with local file access, permission to use it with the selected data, enough storage for new copies, and time to answer questions. The kit does not install an AI tool or provide an AI account.

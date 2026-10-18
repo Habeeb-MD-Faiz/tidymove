@@ -1,7 +1,7 @@
 {
   "name": "tidymove",
   "version": "0.1.0",
-  "description": "An AI-guided kit to organize old drives and new laptops: ask, plan, copy, verify, and keep the originals.",
+  "description": "Move your files from old computers and drives to one tidy new home without losing any. Every copy is checked and the originals stay as they were.",
   "author": { "name": "the tidymove authors" },
   "license": "MIT",
   "repository": "https://github.com/Habeeb-MD-Faiz/tidymove"
