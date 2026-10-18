@@ -8,12 +8,19 @@
 
 <p align="center"><strong>tidymove</strong></p>
 
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/licence-MIT-A9AAF5?style=flat-square&labelColor=000000" alt="Licence: MIT"></a>
+  <a href="#before-you-start"><img src="https://img.shields.io/badge/stage-early%20release-A9AAF5?style=flat-square&labelColor=000000" alt="Stage: early release"></a>
+  <a href="docs/USAGE.md"><img src="https://img.shields.io/badge/Windows-PowerShell%205.1-A9AAF5?style=flat-square&labelColor=000000" alt="Windows PowerShell 5.1"></a>
+  <a href="#install"><img src="https://img.shields.io/badge/works%20with-Claude%20Code%20%C2%B7%20Codex%20%C2%B7%20Gemini%20CLI-A9AAF5?style=flat-square&labelColor=000000" alt="Works with Claude Code, Codex and Gemini CLI"></a>
+</p>
+
 # Every old drive. One tidy new home.
 
 Your AI agent gathers the files you choose from old computers and drives, sorts them, and checks each copy.
 
-[Install](#install) · [How it works](#how-a-move-works) · [Safety](#safety) · [FAQ](#faq)
-<!-- Add the website link here once its domain is set. -->
+[Website](https://tidymove.vercel.app) · [Install](#install) · [How it works](#how-a-move-works) · [Safety](#safety) · [FAQ](#faq) · [Contribute](CONTRIBUTING.md)
+<!-- Update the website link when the custom domain is set. -->
 
 ## Install
 
