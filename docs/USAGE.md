@@ -136,7 +136,7 @@ source,target,mode
 <SOURCE-FOLDER>,<NEW-TARGET-FOLDER>,folder
 ```
 
-Use a CSV writer when filling real paths, so commas and quotation marks survive. `folder` means a whole selected folder. `file` means one file, with its unchanged filename at the end of the target path. The [migration plan template](../skills/tidymove/templates/migration-plan.md) explains how to record special cases separately.
+Use a CSV writer when filling real paths, so commas and quotation marks survive. `folder` means a whole selected folder. `file` means one file, with the exact destination filename at the end of the target path. That name may differ from the original. For example, two sources named `notes.txt` can become `notes-home.txt` and `notes-project.txt` in one destination folder. Preview both rows first. The script keeps the originals and never overwrites an existing file. An existing destination must match the source by SHA-256. The [migration plan template](../skills/tidymove/templates/migration-plan.md) explains how to record special cases separately.
 
 ## Copy after approval
 
@@ -146,13 +146,16 @@ After reviewing the plan, preview, available space, and source protection:
 & "$kit\skills\tidymove\scripts\copy-verify.ps1" -Manifest "$run\manifest.csv" -OutputDir "$run\copy-01" -Execute
 ```
 
-The script checks every selected path and size, and by default every file's SHA-256. A fresh log folder preserves earlier attempts. Read `verification.csv` and the numbered row logs.
+The script checks every selected path and size, and by default every file’s SHA-256. A fresh log folder preserves earlier attempts. Read `verification.csv` and the numbered row logs. Each file row always receives a SHA-256 check, including when its destination name changes. Folder rows use robocopy on Windows or rsync on macOS/Linux. File rows use a direct copy that refuses to replace an existing file.
+
+A refusal before copying writes `preflight.csv` in the new output directory, with `row,source,target,mode,stage,status,reason,exit_code`. Each parsed row records `REFUSED`, the batch refusal reason and exit code 1. Row 0 represents an empty manifest. No destination data is created. If the output path is unsafe, already exists, cannot be written, or cannot be proved separate from the manifest’s data paths, the script prints `REPORT NOT WRITTEN` and retains the console refusal instead. It cannot safely promise a report at an arbitrary path. Keep that console output and correct the path before retrying.
 
 | Result | Meaning |
 |---|---|
 | `DRY-RUN` | Preview completed; no claim that the files were copied. |
 | `VERIFIED-ALL` | All selected file contents matched at check time. |
 | `VERIFIED-SAMPLE` | All expected paths/sizes checked; only the declared subset of contents checked. |
+| `REFUSED` | Preflight stopped the whole batch before copying; read `preflight.csv`. |
 | `FAILED` or `STOP` | Keep everything and investigate. Do not proceed to activation. |
 
 `-Verify Sample -SampleSize 20` hashes the first 20 sorted file paths plus every pre-existing mapped destination file. This is **not a random sample** and cannot prove equality of unsampled files. Use full verification unless you explicitly accept that limit.
@@ -163,7 +166,7 @@ Once checks pass, open representative files yourself. After you approve using th
 
 ## What needs a separate plan
 
-The ordinary copier rejects links, recognized cloud placeholders, and secret-looking names. That includes `.env.example` and key files ending in `.sample`: a reassuring filename does not prove safe contents. Review harmless examples separately without weakening the detector.
+The ordinary copier rejects links, recognized cloud placeholders, and secret-looking names. That includes `.env.example`, `passwords-old.txt`, password and credential names, tokens, private keys, wallets, recovery codes and key files ending in `.sample`. These checks use names only. Filename filters cannot detect every secret. Review harmless examples separately without weakening the detector.
 
 Cloud-only files need owner-controlled recovery into new storage. Passwords and keys stay owner-handled. App databases need a consistent export. File fingerprints cover ordinary file contents, not every filesystem feature: security permissions, alternate data streams, sparse storage, resource forks, extended attributes, and case-sensitive names need explicit checks or another reviewed method.
 
@@ -183,7 +186,11 @@ The test creates made-up files under a new `runs/smoke-...` folder and keeps the
 powershell.exe -NoProfile -File .\tests\smoke.ps1 -WorkDir '<NEW-TEST-FOLDER>'
 ```
 
-The final result should say `SMOKE PASS`. Deliberately rejected cases print `STOP` or `NOT PROVED` followed by a passing assertion. A test failure ends with `SMOKE FAIL` and a nonzero exit code. The suite checks synthetic file handling and simulated disk flags; it does not certify real disk protection, data recovery, or other operating systems.
+The final result should say `SMOKE PASS` and state the skipped count. Deliberately rejected cases print a refusal followed by a passing assertion. The Windows freeze checker returns 0 for proved frozen, 1 for proved writable, and 2 for inconclusive, with a reason. A denied or unknown real disk query is `SKIPPED`, never a passing writable disk assertion. A proved frozen fixture disk fails that assertion. Any failed assertion ends with `SMOKE FAIL` and exit code 1; otherwise the suite returns 0 and reports skips separately. The suite checks synthetic file handling and simulated disk flags; it does not certify real disk protection, data recovery, or other operating systems.
+
+Inventory and copy safety checks inspect the supplied paths and every parent through the drive or filesystem root, even in fixture mode. On Windows they query existence and attributes to reject reparse points and offline or cloud locations, and compare each path component against secret name patterns. On macOS/Linux they inspect symlink metadata and path names. Copy also checks for `.tidymove-active` at the destination and its parents. Ancestor validation does not open file contents. Copy separately reads the manifest at its supplied path and the fixture marker inside `FixtureRoot`. That option does not confine manifest or output paths. These ancestor checks prevent a link above the root from redirecting a scan or copy.
+
+When the caller requires a strict subtree, use `-StrictSubtree` on Windows inventory or copy, or `--strict-subtree` on their shell equivalents. The request is refused before supplied paths, the manifest or the marker are inspected, and before output is created. This option reports an incompatible boundary; it does not enable a bounded scan. Do not run these scripts under a strict subtree requirement without it. Fixture mode permits synthetic data on writable storage but is not a read sandbox.
 
 ## If you get stuck
 

@@ -6,12 +6,12 @@ Execute only the approved batch. Keep originals frozen and destinations inactive
 
 1. Recheck frozen state, capacity, manifest version and absence of live writers.
 2. Run `copy-verify` without `-Execute`. Review every row and every exclusion.
-3. After approval, run `-Execute` with full hashing by default. The tool uses copy-only robocopy or rsync; it never purges or deletes.
-4. Review the verification CSV and row logs. Transport exit codes alone do not prove byte equality.
+3. After approval, run `-Execute` with full hashing by default. Folder rows use robocopy or rsync. File rows copy directly to the exact approved filename with overwrite disabled, then verify SHA-256. The tool never purges or deletes.
+4. Review the verification CSV and row logs. Transport exit codes alone do not prove byte equality. A preflight refusal records `REFUSED` and the batch reason for each parsed row in `preflight.csv`, before any destination copy. If a safe report cannot be written, retain the console refusal. Do not reuse an output directory or put logs in source data to force a report.
 5. Preserve partial targets. If a pre-existing file differs, use a fresh target and record the superseded partial copy; never force an overwrite.
 6. Recheck source state and counts. Obtain the owner's application checks before switching consumers.
 
-The Windows helper uses `/E /COPY:DAT /DCOPY:DAT /XJ /Z` with bounded retries. `/XC /XN /XO` skips pre-existing files, which are fully hashed in preflight. This differs from blindly trusting timestamps on a partial restartable file. It preserves extra destination files and reports their number. A sample pass checks all expected paths/sizes and only the declared hash sample, plus existing files.
+For folder rows, the Windows helper uses `/E /COPY:DAT /DCOPY:DAT /XJ /Z` with bounded retries. `/XC /XN /XO` skips pre-existing files, which are fully hashed in preflight. This differs from blindly trusting timestamps on a partial restartable file. It preserves extra destination files and reports their number. A sample pass checks all expected paths/sizes and only the declared hash sample, plus existing files. Each file row contains one file, so it is always hashed. A different destination filename changes only the new copy’s name. The original remains in place. Identical existing files are retained; conflicting files stop the batch.
 
 Do not add `/MIR`, `/PURGE`, `/MOVE`, `/MOV` or a source cleanup step. Do not use rsync `--delete` or `--remove-source-files`. Logs must not be inside the source, destination or opaque vault.
 

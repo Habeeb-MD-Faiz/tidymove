@@ -5,6 +5,7 @@
 [CmdletBinding()]
 param([string]$WorkDir)
 $ErrorActionPreference='Stop'
+$skipped=0
 $repo=Split-Path -Parent $PSScriptRoot
 $scripts=Join-Path $repo 'skills\tidymove\scripts'
 if (-not $WorkDir) { $WorkDir=Join-Path $repo ('runs\smoke-'+(Get-Date -Format 'yyyyMMdd-HHmmss')+'-'+[guid]::NewGuid().ToString('N').Substring(0,8)) }
@@ -27,6 +28,8 @@ try {
     if (Test-Path -LiteralPath $WorkDir) { throw 'WorkDir must be new; existing test data is retained.' }
     [void][IO.Directory]::CreateDirectory($WorkDir)
     Write-Fixture (Join-Path $WorkDir '.tidymove-fixture') 'Synthetic tidymove test data only'
+    & powershell.exe -NoProfile -File (Join-Path $PSScriptRoot 'regressions.ps1') -WorkDir (Join-Path $WorkDir 'regressions')
+    Assert-Test ($LASTEXITCODE -eq 0) 'confirmed defect regressions'
     $source=Join-Path $WorkDir 'source with spaces'
     $target=Join-Path $WorkDir 'target with spaces'
     Write-Fixture (Join-Path $source 'root.txt') 'alpha'
@@ -158,13 +161,20 @@ exit $LASTEXITCODE
 '@
     foreach ($case in @('frozen','writable','offline','missing','ambiguous')) {
         & powershell.exe -NoProfile -File $mock -Checker (Join-Path $scripts 'verify-frozen.ps1') -Source $source -Case $case
-        $expected=1; if ($case -eq 'frozen') { $expected=0 }
+        $expected=2; if ($case -eq 'frozen') { $expected=0 }; if ($case -eq 'writable') { $expected=1 }
         Assert-Test ($LASTEXITCODE -eq $expected) ('simulated freeze gate '+$case)
     }
     # A live fixture should not pass the production disk-read-only check.
-    & powershell.exe -NoProfile -File (Join-Path $scripts 'verify-frozen.ps1') -Root $source
-    Assert-Test ($LASTEXITCODE -ne 0) 'writable fixture is not proved frozen'
-    Write-Output 'SMOKE PASS: inventory, dry run, copy, hashes, source unchanged, no deletes, rerun and safety failures.'
+    $freezeOutput=@(& powershell.exe -NoProfile -File (Join-Path $scripts 'verify-frozen.ps1') -Root $source)
+    $freezeExit=$LASTEXITCODE
+    if ($freezeExit -eq 0) { throw 'Real fixture disk unexpectedly proved frozen; writable-disk assertion failed.' }
+    elseif ($freezeExit -eq 1 -and ($freezeOutput -join ' ') -match '^NOT FROZEN:') {
+        Assert-Test $true 'real fixture disk proved writable'
+    } else {
+        $skipped++
+        Write-Output ('SKIPPED real writable-disk assertion: inconclusive (exit '+$freezeExit+'); '+($freezeOutput -join ' '))
+    }
+    Write-Output ('SMOKE PASS: all executed assertions passed; '+$skipped+' skipped. A skipped real disk check is not proof of disk protection.')
     Write-Output ('Verification CSV: '+$report)
     Write-Output ('Retained fixtures: '+$WorkDir)
     exit 0

@@ -5,7 +5,12 @@
    Exit 0: scan completed (review exclusions); 1: fatal; 2: enumeration errors.
 #>
 [CmdletBinding()]
-param([string]$Root, [string]$OutputCsv, [switch]$Library, [switch]$AllowLiveScan)
+param([string]$Root, [string]$OutputCsv, [switch]$Library, [switch]$AllowLiveScan, [switch]$StrictSubtree)
+
+if ($StrictSubtree) {
+    Write-Output 'STRICT SUBTREE REFUSED: Safety checks require ancestor metadata through the drive root. No scan or output writes performed.'
+    exit 1
+}
 
 function Get-TidymovePath([string]$Path) {
     if ([string]::IsNullOrWhiteSpace($Path) -or $Path -notmatch '^[A-Za-z]:\\') { throw 'Use an absolute local drive path.' }
@@ -20,7 +25,7 @@ function Test-TidymoveWithin([string]$Path, [string]$Parent) {
 function Get-TidymoveExtended([string]$Path) { return '\\?\' + $Path }
 function Test-TidymoveSecret([string]$Name) {
     # Names are a conservative triage aid, not a complete secret detector.
-    return $Name -match '(?i)(^\.env($|\.)|\.env$|^\.(secrets?|ssh|gnupg|aws|azure)($|\.)|vault|credentials?|creds([._-]|$)|(^|[._-])tokens?([._@-]|$)|client_secret|recovery.codes?|private.keys?|^id_(rsa|dsa|ecdsa|ed25519)|\.(pem|key|pfx|p12)($|\.)|^auth\.json($|\.)|^hosts\.yml($|\.)|^rclone\.conf($|\.)|^\.netrc$|^\.git-credentials$|^\.clasprc\.json$|(^|[._-])secrets?([._-]|$)|^\.(npmrc|pypirc|gitcookies)($|\.)|^\.(docker|kube)($|\.)|^gcloud$|^(Cookies|Login Data|Web Data)($|[.-])|\.(kdbx|keychain|keychain-db)($|\.))'
+    return $Name -match '(?i)(^\.env($|\.)|\.env$|^\.(secrets?|ssh|gnupg|aws|azure)($|\.)|vault|passwords?|passwd|credentials?|wallet|creds([._ -]|$)|(^|[._ -])tokens?([._@ -]|$)|client_secret|recovery.codes?|recovery[._ -]*codes?|backup[._ -]*codes?|seed[._ -]*phrases?|private.keys?|private[._ -]*keys?|^id_(rsa|dsa|ecdsa|ed25519)|\.(pem|key|pfx|p12)($|\.)|^auth\.json($|\.)|^hosts\.yml($|\.)|^rclone\.conf($|\.)|^\.netrc$|^\.git-credentials$|^\.clasprc\.json$|(^|[._ -])secrets?([._ -]|$)|^\.(npmrc|pypirc|gitcookies)($|\.)|^\.(docker|kube)($|\.)|^gcloud$|^(Cookies|Login Data|Web Data)($|[.-])|\.(kdbx|keychain|keychain-db)($|\.))'
 }
 function Assert-TidymoveAncestors([string]$Path) {
     $cursor = $Path

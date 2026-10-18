@@ -89,7 +89,7 @@ For requirements, copy commands and install sources, see the [practical guide](d
 
 1. **Take stock.** Your agent lists the drives, folders and kinds of file in scope, flags likely secrets, and records anything it cannot read. The originals stay unchanged.
 2. **Ask.** Anything unclear becomes a quick multiple-choice card with a recommended answer. You decide, and “Other” is always there.
-3. **Plan.** It drafts a clean folder layout for the new home and shows you where everything will land before anything is copied.
+3. **Plan.** It drafts a clean folder layout for the new home and shows you where everything will land before anything is copied. Files with the same name can receive different names in the new home.
 4. **Copy.** Files are copied, never moved. The old drives are only read, and stay exactly as they were.
 5. **Verify.** By default, selected files are counted and checked by checksum on both sides. Failed checks and skipped items stay in the record.
 6. **Set up.** Your agents get a safe setup on the new machine: where things live, what they may touch, and what stays off-limits.
@@ -105,6 +105,8 @@ Your originals stay put.
 - **Secrets stay with you.** Your agent is told to leave passwords, keys and tokens alone, and to keep them out of its notes.
 
 These are workflow rules and script safeguards, not a guarantee against mistakes or hardware failure. You approve source protection; tidymove does not make drives read-only automatically. Filename checks cannot detect every secret. Keep an independent backup on a separate device or approved service.
+
+The scripts inspect parent folder metadata to reject unsafe paths, including during synthetic tests. They cannot work within a strict subtree boundary. See the [script boundary and test results](docs/USAGE.md#check-the-scripts) before running a sandbox test.
 
 ## Before you start
 

@@ -5,7 +5,7 @@ Use `migration-plan.md` and `audit-report.md`. Build execution batches with prer
 1. Convert triage decisions into a manifest, because a plan written only in prose cannot prove coverage.
 2. Validate CSV with a parser, not comma counting. Quote notes and paths containing commas. Keep encoding explicit.
 3. Resolve paths and reject overlap, duplicate target rows, path traversal, links into sources and log paths inside data roots.
-4. Dry-run every row. Check actual selected bytes, not a total that includes excluded files.
+4. Dry-run every row. For file rows, review the exact destination filename, including any change from the source name. Two sources with the same name need distinct destination paths. Existing destinations must match by SHA-256 and are never overwritten. Check actual selected bytes, not a total that includes excluded files. A preflight refusal writes `preflight.csv` with the batch reason for each parsed row when the output path is safe and fresh. If reporting is refused, retain the console reason and correct the path without changing source data or prior evidence.
 5. Test scripts on synthetic files, including spaces, Unicode, long paths, extra target files, missing sources and corruption. A skipped dependency check is not a pass.
 6. Complete reviews, fix findings and rerun only the relevant checks. Record proof of each fix.
 7. Present the exact phase packet to the owner. State identity, destinations, time/capacity estimate, failure stops and rollback.

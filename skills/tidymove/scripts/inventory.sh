@@ -9,8 +9,12 @@ p = argparse.ArgumentParser()
 p.add_argument('root')
 p.add_argument('output_csv')
 p.add_argument('--allow-live-scan', action='store_true', help='Metadata reconciliation only; not permission to copy a live source')
+p.add_argument('--strict-subtree', action='store_true', help='Refuse upfront because ancestor safety checks exceed a strict subtree')
 a = p.parse_args()
-secret = re.compile(r'(^\.env($|\.)|\.env$|^\.(secrets?|ssh|gnupg|aws|azure)($|\.)|vault|credentials?|creds([._-]|$)|(^|[._-])tokens?([._@-]|$)|client_secret|recovery.codes?|private.keys?|^id_(rsa|dsa|ecdsa|ed25519)|\.(pem|key|pfx|p12)($|\.)|^auth\.json($|\.)|^hosts\.yml($|\.)|^rclone\.conf($|\.)|^\.netrc$|^\.git-credentials$|^\.clasprc\.json$|(^|[._-])secrets?([._-]|$)|^\.(npmrc|pypirc|gitcookies)($|\.)|^\.(docker|kube)($|\.)|^gcloud$|^(Cookies|Login Data|Web Data)($|[.-])|\.(kdbx|keychain|keychain-db)($|\.))', re.I)
+if a.strict_subtree:
+    print('STRICT SUBTREE REFUSED: Safety checks require ancestor metadata through the filesystem root. No scan or output writes performed.')
+    sys.exit(1)
+secret = re.compile(r'(^\.env($|\.)|\.env$|^\.(secrets?|ssh|gnupg|aws|azure)($|\.)|vault|passwords?|passwd|credentials?|wallet|creds([._ -]|$)|(^|[._ -])tokens?([._@ -]|$)|client_secret|recovery.codes?|recovery[._ -]*codes?|backup[._ -]*codes?|seed[._ -]*phrases?|private.keys?|private[._ -]*keys?|^id_(rsa|dsa|ecdsa|ed25519)|\.(pem|key|pfx|p12)($|\.)|^auth\.json($|\.)|^hosts\.yml($|\.)|^rclone\.conf($|\.)|^\.netrc$|^\.git-credentials$|^\.clasprc\.json$|(^|[._ -])secrets?([._ -]|$)|^\.(npmrc|pypirc|gitcookies)($|\.)|^\.(docker|kube)($|\.)|^gcloud$|^(Cookies|Login Data|Web Data)($|[.-])|\.(kdbx|keychain|keychain-db)($|\.))', re.I)
 def opaque(name):
     return bool(secret.search(name))
 def safe(path):

@@ -31,6 +31,10 @@ An active system disk cannot be frozen while the owner works on it. Use `invento
 
 The scanner reports **direct-child** folder totals, so sum folder rows without double counting. Dates are file modification dates, not proof of last use. It skips secret-named subtrees and reparse/cloud entries, with separate rows. It does not hash duplicates or inspect browser databases. List those follow-ups explicitly.
 
+Secret name patterns include passwords, passwd, secrets, credentials, tokens, private keys, wallets, recovery codes, backup codes and seed phrases. The check uses names only and never opens their contents. Filename filters cannot detect every secret.
+
+Fixture scans still inspect ancestor metadata above the selected root to reject links and opaque locations. They cannot honor a strict subtree requirement. Pass `-StrictSubtree` or `--strict-subtree` to refuse that incompatible request before inspecting supplied paths. The [usage guide](../../../docs/USAGE.md#check-the-scripts) lists the exact ancestor checks. Keep those checks intact.
+
 Inventory identifies Git markers without invoking Git or reading repository contents. Dirty status remains `needs-checking`; linked worktree pointers are not followed. A separate Git review requires owner-approved content access and review of repository-controlled configuration and helpers. Disable optional locks and filesystem monitors in that review. A denied directory makes inventory incomplete and exits non-zero. Never set global `safe.directory=*` to hide errors.
 
 Maintain a coverage ledger: discovered root/path, scan status, triage ID, manifest row or retained-original decision, and exception evidence. A broad triage row for a drive is not coverage of every descendant. Self-test the coverage matcher with known included and excluded paths.

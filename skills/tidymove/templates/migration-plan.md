@@ -34,16 +34,18 @@ Original sources remain untouched. Copy, verify, switch consumers, keep original
 ```csv
 source,target,mode
 <SOURCE-1>/<PROJECT>,<TARGET>/<SCOPE>/<PROJECT>,folder
+<SOURCE-1>/notes.txt,<TARGET>/Documents/notes-home.txt,file
+<SOURCE-2>/notes.txt,<TARGET>/Documents/notes-project.txt,file
 ```
 
-`folder`: target is the exact destination root. `file`: target includes the unchanged filename. Replace placeholders with absolute platform paths. Keep manifest/logs outside all data roots. Use only non-overlapping ordinary-data rows. Separate secrets, links, placeholders, cloud and activation into owner-led rows below.
+`folder`: target is the exact destination root. `file`: target includes the exact destination filename, which may differ from the original. Preview each name change. The destination must be absent or already match the source by SHA-256; it is never overwritten. Replace placeholders with absolute platform paths. Keep manifest/logs outside all data roots. Use only non-overlapping ordinary-data rows. Separate secrets, links, placeholders, cloud and activation into owner-led rows below.
 
 <!-- Optional richer planning fields; only source,target,mode go into the executable CSV. -->
 | Planning field | Convert to executable form |
 |---|---|
 | phase / scope / notes | Keep in batch ledger and decision log |
 | kind=folder or ordinary repo | mode=folder, after all special entries have dispositions |
-| kind=file with destination directory | mode=file; append unchanged source basename |
+| kind=file with destination directory | mode=file; append the approved destination filename |
 | src / dst | source / target; validate resolved paths |
 | remote / cloud / archive / worktree relink | Separate reviewed operation; generic copier does not implement it |
 | xd / xf exclusions | Explicit bounded rows plus exclusion ledger; no silent loss |
